@@ -1,4 +1,4 @@
-colo slate
+colo industry
 syntax on
 
 filetype plugin indent on
@@ -49,6 +49,27 @@ nnoremap <C-g> :NERDTreeToggle<CR>
 " fzf
 nnoremap <C-h> :FZF<CR>
 
+" coc.nvim
+" Use <cr> to confirm completion
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+" use <tab> to trigger completion and navigate to the next complete item
+" use <tab> to trigger completion and navigate to the next complete item
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+
+" Use <Tab> and <S-Tab> to navigate the completion list:
+inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
+inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
+
+
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -59,5 +80,8 @@ call plug#begin()
 
 Plug 'junegunn/fzf'
 Plug 'wycats/nerdtree'
+
+" Use release branch (recommended)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
